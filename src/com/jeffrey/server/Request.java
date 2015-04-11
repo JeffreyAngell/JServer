@@ -17,6 +17,7 @@ public class Request {
     private Headers h;
     private URI uri;
     private InetSocketAddress address;
+    private String path;
     public Request(HttpExchange e){
         //System.out.println("Making request");
         is = e.getRequestBody();
@@ -24,6 +25,7 @@ public class Request {
         h = e.getRequestHeaders();
         uri = e.getRequestURI();
         address = e.getRemoteAddress();
+        path = e.getHttpContext().getPath();
         //System.out.println("Request made");
     }
 
@@ -46,5 +48,9 @@ public class Request {
 
     public InetSocketAddress getAddress() {
         return address;
+    }
+
+    public String getPath(){
+        return path;
     }
 }

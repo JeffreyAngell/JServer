@@ -2,9 +2,10 @@ package com.jeffrey.server;
 
 import com.google.gson.Gson;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 * Created by jeffrey on 3/7/15.
@@ -12,11 +13,25 @@ import java.io.InputStream;
 public class Response {
     int status;
     byte[] response;
-
+    boolean stream = false;
+    InputStream is = null;
+    long islength;
+    Map<Integer, String> responses;
 
     public Response(int i){
         status = i;
         response = null;
+        responses = new HashMap<>();
+        responses.put(200, "OK");
+        responses.put(201, "Created");
+        responses.put(206, "Partial content");
+        responses.put(401, "Unauthorized");
+        responses.put(403, "Forbidden");
+        responses.put(404, "Not found");
+        responses.put(405, "Method not implemented");
+        responses.put(409, "Conflict");
+        responses.put(500, "Internal server error");
+        responses.put(503, "Service temporarily unavailable");
     }
 
     public Response(int i, String s) {
@@ -54,6 +69,13 @@ public class Response {
         return this;
     }
 
+    public Response pipe(InputStream is, long l){
+        this.is = is;
+        islength = l;
+        stream = true;
+        return this;
+    }
+
 
     public int getStatus() {
         return status;
@@ -61,13 +83,25 @@ public class Response {
 
     public long getSize() {
         if(response == null){
-            response = "No response".getBytes();
+            response = responses.get(status).getBytes();
         }
-        long length = response.length;
-        return length;
+        if(!stream) {
+            long length = response.length;
+            return length;
+        } else{
+            return islength;
+        }
     }
 
     public byte[] getBody() {
         return response;
+    }
+
+    public boolean isStream(){
+        return stream;
+    }
+
+    public InputStream getStream() {
+        return is;
     }
 }

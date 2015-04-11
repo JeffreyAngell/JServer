@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 
 /**
@@ -20,7 +21,6 @@ public class JServer{
 
     public JServer(int port, int i) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 5);
-        //server.start();
     }
 
 
@@ -51,7 +51,17 @@ public class JServer{
             if(r == null)
                 r = new Response(500);
             httpExchange.sendResponseHeaders(r.getStatus(), r.getSize());
-            httpExchange.getResponseBody().write(r.getBody());
+            if(!r.isStream()) {
+                httpExchange.getResponseBody().write(r.getBody());
+            }
+            else{
+                byte[] b = new byte[2048];
+                InputStream is = r.getStream();
+                while(is.available() > 0) {
+                    int read = is.read(b);
+                    httpExchange.getResponseBody().write(b, 0, read);
+                }
+            }
             httpExchange.getResponseBody().close();
         }
     }

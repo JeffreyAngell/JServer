@@ -35,11 +35,7 @@ public class BasicResponseTest {
                             return new Response(200, scanner.next());
                     }
                     if(r.getMethod().equals("POST")){
-                        try {
-                            return new Response(500).pipe(r.getBody());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        return new Response(500).pipe(r.getBody());
                     }
                     return new Response(405);
                 }
@@ -76,11 +72,7 @@ public class BasicResponseTest {
                 @Override
                 public Response handle(Request r) {
                     if(r.getMethod().equals("POST")){
-                        try {
-                            return new Response(200).pipe(r.getBody());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        return new Response(200).pipe(r.getBody());
                     }
                     return new Response(405);
                 }

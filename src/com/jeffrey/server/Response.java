@@ -25,7 +25,7 @@ public class Response {
         responses.put(200, "OK");
         responses.put(201, "Created");
         responses.put(206, "Partial content");
-        responses.put(400, "Bad response");
+        responses.put(400, "Bad request");
         responses.put(401, "Unauthorized");
         responses.put(403, "Forbidden");
         responses.put(404, "Not found");

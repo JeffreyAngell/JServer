@@ -99,13 +99,14 @@ public class JServer{
             Response r = h.handle(new Request(httpExchange));
             if(r == null)
                 r = new Response(500);
-            httpExchange.sendResponseHeaders(r.getStatus(), r.getSize());
             Headers h = r.getHeaders();
             if(h != null){
+                Headers responseHeaders = httpExchange.getResponseHeaders();
                 for(String key: h.keySet()){
-                    httpExchange.getRequestHeaders().add(key, h.getFirst(key));
+                    responseHeaders.add(key, h.getFirst(key));
                 }
             }
+            httpExchange.sendResponseHeaders(r.getStatus(), r.getSize());
             if(!r.isStream()) {
                 httpExchange.getResponseBody().write(r.getBody());
             }

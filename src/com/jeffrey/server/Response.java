@@ -1,6 +1,7 @@
 package com.jeffrey.server;
 
 import com.google.gson.Gson;
+import com.sun.net.httpserver.Headers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ public class Response {
     InputStream is = null;
     long islength;
     Map<Integer, String> responses;
+    Headers headers = null;
 
     public Response(int i){
         status = i;
@@ -104,5 +106,15 @@ public class Response {
 
     public InputStream getStream() {
         return is;
+    }
+
+    public Headers getHeaders(){
+        return headers;
+    }
+
+    public void addHeader(String s1, String s2){
+        if(headers == null)
+            headers = new Headers();
+        headers.add(s1, s2);
     }
 }

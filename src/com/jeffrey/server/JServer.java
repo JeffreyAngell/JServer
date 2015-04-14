@@ -100,6 +100,12 @@ public class JServer{
             if(r == null)
                 r = new Response(500);
             httpExchange.sendResponseHeaders(r.getStatus(), r.getSize());
+            Headers h = r.getHeaders();
+            if(h != null){
+                for(String key: h.keySet()){
+                    httpExchange.getRequestHeaders().add(key, h.getFirst(key));
+                }
+            }
             if(!r.isStream()) {
                 httpExchange.getResponseBody().write(r.getBody());
             }

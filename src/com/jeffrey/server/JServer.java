@@ -1,13 +1,12 @@
 package com.jeffrey.server;
 
-import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.net.ssl.*;
+import java.io.*;
 import java.net.InetSocketAddress;
+import java.security.*;
+import java.security.cert.CertificateException;
 
 /**
  * Created by jeffrey on 3/7/15.
@@ -21,6 +20,56 @@ public class JServer{
 
     public JServer(int port, int i) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 5);
+    }
+
+    public JServer(int port, String s, String kslocation, String kspassword) throws IOException {
+        if (s.equals("https") || s.contains("s")) {
+            server = HttpsServer.create(new InetSocketAddress(port), 0);
+            try {
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+
+                // initialise the keystore
+                char[] password = kspassword.toCharArray();
+                KeyStore ks = KeyStore.getInstance("JKS");
+                FileInputStream fis = new FileInputStream(kslocation);
+                ks.load(fis, password);
+
+                // setup the key manager factory
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+                kmf.init(ks, password);
+
+                // setup the trust manager factory
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+                tmf.init(ks);
+
+                // setup the HTTPS context and parameters
+                sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+                ((HttpsServer) server).setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+                    public void configure(HttpsParameters params) {
+                        try {
+                            // initialise the SSL context
+                            SSLContext c = SSLContext.getDefault();
+                            SSLEngine engine = c.createSSLEngine();
+                            params.setNeedClientAuth(false);
+                            params.setCipherSuites(engine.getEnabledCipherSuites());
+                            params.setProtocols(engine.getEnabledProtocols());
+
+                            // get the default parameters
+                            SSLParameters defaultSSLParameters = c.getDefaultSSLParameters();
+                            params.setSSLParameters(defaultSSLParameters);
+                        } catch (NoSuchAlgorithmException e1) {
+                            e1.printStackTrace();
+                            System.exit(0);
+                        }
+                    }
+                });
+            } catch (NoSuchAlgorithmException | KeyStoreException | UnrecoverableKeyException | CertificateException | KeyManagementException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
+        } else{
+            server = HttpServer.create(new InetSocketAddress(port), 0);
+        }
     }
 
 

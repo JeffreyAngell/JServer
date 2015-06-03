@@ -21,6 +21,9 @@ public class WebsiteHandler implements JHandler {
     public Response handle(Request r) {
         String location = base + r.getURI().getPath().replaceFirst(r.getPath(), "");
         File f = new File(location);
+        if(f.isDirectory()){
+            f = new File(location + "/index.html");
+        }
         if(!f.isFile()){
             File error = new File(base + "/error.html");
             if(error.isFile() && error.canRead())

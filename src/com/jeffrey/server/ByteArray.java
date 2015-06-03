@@ -18,16 +18,19 @@ public class ByteArray {
 
     public ByteArray(InputStream is) throws IOException {
         this();
-        while(is.available() > 0){
-            byte[] t = new byte[is.available()];
-            is.read(t);
-            this.add(t);
+        byte[] t = new byte[2048];
+        int read = 0;
+        while((read = is.read(t)) > 0){
+            this.add(t, read);
         }
     }
 
-
     public void add(byte[] bytes){
-        while(bytes.length + read > length){
+        add(bytes, bytes.length);
+    }
+
+    public void add(byte[] bytes, int size){
+        while(size + read > length){
             length *= 2;
             byte[] newBytes = new byte[length];
             for(int i = 0; i < read; i++){
@@ -35,7 +38,7 @@ public class ByteArray {
             }
             this.bytes = newBytes;
         }
-        for(int i = 0; i < bytes.length; i++){
+        for(int i = 0; i < size; i++){
             this.bytes[read++] = bytes[i];
         }
     }

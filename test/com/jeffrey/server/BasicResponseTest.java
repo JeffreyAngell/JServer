@@ -1,24 +1,19 @@
 package com.jeffrey.server;
 
-import com.jeffrey.server.*;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Scanner;
 
 /**
  * Created by jeffrey on 3/7/15.
  */
 public class BasicResponseTest {
-
     @Test
     public void codeCompiles(){
         try {
@@ -100,13 +95,10 @@ public class BasicResponseTest {
                 ba.add(t);
             }
             Assert.assertEquals(string, new String(ba.trim()));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(s != null)
-            s.stop();
+        s.stop();
     }
 
     /*@Test

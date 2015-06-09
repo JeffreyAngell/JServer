@@ -15,21 +15,21 @@ public class Response {
     InputStream is = null;
     long islength;
     Headers headers = null;
-    static Serializer serializer = null;
+    Serializer serializer;
+    static Serializer staticSerializer = null;
 
     public Response(int i){
-        status = i;
-        response = null;
+        this(i, (byte[]) null);
     }
 
     public Response(int i, String s) {
-        status = i;
-        response = s.getBytes();
+        this(i, s.getBytes());
     }
 
     public Response(int i, byte[] bytes){
         status = i;
         response = bytes;
+        serializer = staticSerializer;
     }
 
     public Response send(Object o){
@@ -193,7 +193,11 @@ public class Response {
         return "";
     }
 
-    public static void use(Serializer s){
+    public static void setSerializer(Serializer s){
+        staticSerializer = s;
+    }
+
+    public void useSerializer(Serializer s){
         serializer = s;
     }
 

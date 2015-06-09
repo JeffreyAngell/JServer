@@ -197,8 +197,9 @@ public class Response {
         staticSerializer = s;
     }
 
-    public void useSerializer(Serializer s){
+    public Response useSerializer(Serializer s){
         serializer = s;
+        return this;
     }
 
     public interface Serializer{

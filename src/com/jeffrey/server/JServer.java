@@ -95,7 +95,6 @@ public class JServer{
 
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
-            //System.out.println("Forwarding...");
             Response r = h.handle(new Request(httpExchange));
             if(r == null)
                 r = new Response(500);
@@ -120,5 +119,9 @@ public class JServer{
             }
             httpExchange.getResponseBody().close();
         }
+    }
+
+    public int getPort(){
+        return server.getAddress().getPort();
     }
 }

@@ -1,19 +1,17 @@
 package com.jeffrey.server;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
-import java.util.Scanner;
 
-/**
- * Created by jeffrey on 6/2/15.
- */
 public class WebsiteHandlerTest {
     static Random rand;
     public WebsiteHandlerTest(){
@@ -66,12 +64,11 @@ public class WebsiteHandlerTest {
 
 
     @Test
-    public void websiteChecker(){
-        int port = randomPort();
-        String url = "http://localhost:" + String.valueOf(port) + "/a";
-
+    public void websiteAtLocationChecker(){
         try{
-            JServer server = new JServer(port);
+            JServer server = new JServer(0);
+            int port = server.getPort();
+            String url = "http://localhost:" + String.valueOf(port) + "/a";
             server.register("/a", new WebsiteHandler("tempdir"));
             server.start();
 
@@ -80,7 +77,6 @@ public class WebsiteHandlerTest {
             Assert.assertEquals(response.getStatus(), 404);
 
             response = get(url + "/error.html");
-            System.out.flush();
             Assert.assertEquals(error, new String(response.getBody(), "UTF-8"));
             Assert.assertEquals(response.getStatus(), 200);
 
@@ -88,16 +84,54 @@ public class WebsiteHandlerTest {
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
 
+            response = get(url + "/");
+            Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
+            Assert.assertEquals(response.getStatus(), 200);
+
             response = get(url + "/index.html");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+
         } catch (IOException e) {
             e.printStackTrace();
+            Assert.fail();
         }
     }
 
-    public static int randomPort(){
-        return rand.nextInt(63536) + 2000;
+    @Test
+    public void websiteAtRootChecker(){
+        try{
+            JServer server = new JServer(0);
+            int port = server.getPort();
+            String url = "http://localhost:" + String.valueOf(port);
+
+            server.register("/", new WebsiteHandler("tempdir"));
+            server.start();
+
+            Response response = get(url + "/badurl");
+            Assert.assertEquals(new String(response.getBody(), "UTF-8"), error);
+            Assert.assertEquals(response.getStatus(), 404);
+
+            response = get(url + "/error.html");
+            Assert.assertEquals(error, new String(response.getBody(), "UTF-8"));
+            Assert.assertEquals(response.getStatus(), 200);
+
+            response = get(url);
+            Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
+            Assert.assertEquals(response.getStatus(), 200);
+
+            response = get(url + "/");
+            Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
+            Assert.assertEquals(response.getStatus(), 200);
+
+            response = get(url + "/index.html");
+            Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
+            Assert.assertEquals(response.getStatus(), 200);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
     }
 
     public Response get(String url){

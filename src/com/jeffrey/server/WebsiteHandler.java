@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-/**
- * Created by jeffrey on 4/10/15.
- */
 public class WebsiteHandler implements JHandler {
     String base = "";
     public WebsiteHandler(String s) throws FileNotFoundException{
@@ -19,7 +16,7 @@ public class WebsiteHandler implements JHandler {
 
     @Override
     public Response handle(Request r) {
-        String location = base + r.getURI().getPath().replaceFirst(r.getPath(), "");
+        String location = base + (r.getPath().equals("/") ? r.getURI().getPath() : r.getURI().getPath().replaceFirst(r.getPath(), ""));
         File f = new File(location);
         if(f.isDirectory()){
             f = new File(location + "/index.html");

@@ -29,7 +29,7 @@ public class WebsiteHandler implements JHandler {
             File error = new File(base + "/error.html");
             if(error.isFile() && error.canRead())
                 try {
-                    return new Response(404).pipe(new FileInputStream(error), error.length());
+                    return new Response(404).setContentType(getContentType(error)).pipe(new FileInputStream(error), error.length());
                 } catch (FileNotFoundException e) {
                     return new Response(500);
                 }
@@ -39,10 +39,24 @@ public class WebsiteHandler implements JHandler {
             return new Response(403);
         }
         try {
-            return new Response(200).pipe(new FileInputStream(f), f.length());
+            return new Response(200).setContentType(getContentType(f)).pipe(new FileInputStream(f), f.length());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return new Response(500);
         }
+    }
+
+    private String getContentType(File f){
+        switch(f.getName().substring(f.getName().indexOf(".") + 1)){
+            case "html":
+                return "text/html";
+            case "jpeg":
+                return "image/jpeg";
+            case "mp4":
+                return "audio/mp4";
+            case "xml":
+                return "application/xml";
+        }
+        return "unknown";
     }
 }

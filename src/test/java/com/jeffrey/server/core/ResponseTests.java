@@ -26,6 +26,11 @@ public class ResponseTests {
             return "";
         }
 
+        @Override
+        public String getContentType() {
+            return "";
+        }
+
         public int getCalled(){
             return called;
         }

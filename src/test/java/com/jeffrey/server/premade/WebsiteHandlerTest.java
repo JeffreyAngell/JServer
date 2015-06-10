@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class WebsiteHandlerTest {
@@ -78,22 +80,27 @@ public class WebsiteHandlerTest {
             Response response = get(url + "/badurl");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), error);
             Assert.assertEquals(response.getStatus(), 404);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url + "/error.html");
             Assert.assertEquals(error, new String(response.getBody(), "UTF-8"));
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url);
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url + "/");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url + "/index.html");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,22 +121,27 @@ public class WebsiteHandlerTest {
             Response response = get(url + "/badurl");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), error);
             Assert.assertEquals(response.getStatus(), 404);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url + "/error.html");
             Assert.assertEquals(error, new String(response.getBody(), "UTF-8"));
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url);
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url + "/");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
             response = get(url + "/index.html");
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,6 +163,9 @@ public class WebsiteHandlerTest {
             else
                 bytes = new ByteArray(connection.getErrorStream()).trim();
             r = new Response(status, bytes);
+            for(Map.Entry<String, List<String>> e: connection.getHeaderFields().entrySet()){
+                r.addHeader(e.getKey(), e.getValue().get(0));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             Assert.fail();

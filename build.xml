@@ -13,7 +13,7 @@
 	
 	<target name="compile" description="compile the source">
 		<mkdir dir="${build}"/>
-		<javac srcdir="${src}" destdir="${build}" excludes="${demo_files}"/>
+		<javac srcdir="${src}" destdir="${build}" excludes="${demo_files}" debug="on"/>
 	</target>
 
 	<target name="build" depends="compile" description="Create the jar">
@@ -21,8 +21,9 @@
 	</target>
 
 	<target name="test" depends="build" description="Run test cases">
+		<delete dir="tmp"/>
 		<mkdir dir="tmp"/>
-		<javac srcdir="${test}" destdir="tmp">
+		<javac srcdir="${test}" destdir="tmp" debug="on">
 			<classpath>
 				<pathelement location="lib/junit.jar"/>
 				<pathelement location="lib/hamcrest.jar"/>
@@ -43,7 +44,6 @@
 				</fileset>
 			</batchtest>
 		</junit>
-		<delete dir="tmp"/>
 	</target>
 
 	<target name="clean" description="Delete build and dist files">

@@ -1,6 +1,6 @@
 package demo.JServerDemo.server;
 
-import main.java.com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.JServer;
 import com.sun.net.httpserver.HttpContext;
 import demo.HttpServerDemo.filter.LoggingFilter;
 import demo.HttpServerDemo.filter.MethodFilter;

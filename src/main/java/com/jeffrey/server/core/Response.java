@@ -37,6 +37,7 @@ public class Response {
         if(serializer == null)
             throw new NoSerializerException();
         response = serializer.serialize(o).getBytes();
+        addHeader("Content-Type", serializer.getContentType());
         return this;
     }
 
@@ -67,6 +68,15 @@ public class Response {
         return this;
     }
 
+    public Response useSerializer(Serializer s){
+        serializer = s;
+        return this;
+    }
+
+    public Response setContentType(String s){
+        addHeader("Content-Type", s);
+        return this;
+    }
 
     public int getStatus() {
         return status;
@@ -75,6 +85,7 @@ public class Response {
     public long getSize() {
         if(response == null){
             response = getDefinition(status).getBytes();
+            addHeader("Content-Type", "text/plain");
         }
         if(!stream) {
             long length = response.length;
@@ -198,13 +209,9 @@ public class Response {
         staticSerializer = s;
     }
 
-    public Response useSerializer(Serializer s){
-        serializer = s;
-        return this;
-    }
-
     public interface Serializer{
         String serialize(Object obj);
+        String getContentType();
     }
     public class NoSerializerException extends RuntimeException{}
 }

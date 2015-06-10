@@ -1,4 +1,4 @@
-package com.jeffrey.server;
+package com.jeffrey.server.core;
 
 /**
  * Created by jeffrey on 3/7/15.

@@ -1,4 +1,8 @@
-package com.jeffrey.server;
+package com.jeffrey.server.premade;
+
+import com.jeffrey.server.core.JHandler;
+import com.jeffrey.server.core.Request;
+import com.jeffrey.server.core.Response;
 
 import java.io.File;
 import java.io.FileInputStream;

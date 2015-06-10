@@ -1,8 +1,8 @@
 package demo.JServerDemo.handler;
 
-import com.jeffrey.server.JHandler;
-import com.jeffrey.server.Request;
-import com.jeffrey.server.Response;
+import main.java.com.jeffrey.server.core.JHandler;
+import main.java.com.jeffrey.server.core.Request;
+import main.java.com.jeffrey.server.core.Response;
 
 import java.util.Random;
 

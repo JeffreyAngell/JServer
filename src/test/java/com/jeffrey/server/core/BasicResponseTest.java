@@ -1,9 +1,9 @@
-package com.jeffrey.server;
+package com.jeffrey.server.core;
 
+import com.jeffrey.server.util.ByteArray;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;

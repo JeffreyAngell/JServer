@@ -1,5 +1,8 @@
-package com.jeffrey.server;
+package com.jeffrey.server.premade;
 
+import com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.Response;
+import com.jeffrey.server.util.ByteArray;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

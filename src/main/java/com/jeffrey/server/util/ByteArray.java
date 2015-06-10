@@ -1,4 +1,4 @@
-package com.jeffrey.server;
+package com.jeffrey.server.util;
 
 import java.io.IOException;
 import java.io.InputStream;

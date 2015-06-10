@@ -1,4 +1,4 @@
-package com.jeffrey.server;
+package com.jeffrey.server.core;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;

@@ -1,4 +1,4 @@
-package com.jeffrey.server;
+package com.jeffrey.server.util;
 
 import org.junit.Assert;
 import org.junit.Test;

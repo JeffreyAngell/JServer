@@ -1,5 +1,6 @@
-package com.jeffrey.server;
+package com.jeffrey.server.core;
 
+import com.jeffrey.server.util.ByteArray;
 import org.junit.Assert;
 import org.junit.Test;
 

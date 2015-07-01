@@ -1,6 +1,7 @@
 package com.jeffrey.server.core;
 
 import com.jeffrey.server.util.ByteArray;
+import com.jeffrey.server.util.DirectoryReader;
 import com.sun.net.httpserver.Headers;
 
 import java.io.IOException;
@@ -31,6 +32,11 @@ public class Response {
         status = i;
         response = bytes;
         serializer = staticSerializer;
+    }
+
+    public Response send(DirectoryReader.FileObject fileObject){
+        addHeader("Content-Type", fileObject.getContentType());
+        return pipe(fileObject.getInputStream(), fileObject.getSize());
     }
 
     public Response send(Object o){

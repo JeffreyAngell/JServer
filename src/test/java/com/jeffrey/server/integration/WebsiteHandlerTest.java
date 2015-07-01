@@ -1,7 +1,8 @@
-package com.jeffrey.server.premade;
+package com.jeffrey.server.integration;
 
 import com.jeffrey.server.core.JServer;
 import com.jeffrey.server.core.Response;
+import com.jeffrey.server.premade.WebsiteHandler;
 import com.jeffrey.server.util.ByteArray;
 import org.junit.After;
 import org.junit.Assert;

@@ -2,6 +2,7 @@ package com.jeffrey.server.core;
 
 import com.jeffrey.server.util.ByteArray;
 import com.jeffrey.server.util.DirectoryReader;
+import com.jeffrey.server.util.Serializer;
 import com.sun.net.httpserver.Headers;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class Response {
 
     public Response send(Object o){
         if(serializer == null)
-            throw new NoSerializerException();
+            throw new Serializer.NoSerializerException();
         response = serializer.serialize(o).getBytes();
         addHeader("Content-Type", serializer.getContentType());
         return this;
@@ -214,10 +215,4 @@ public class Response {
     public static void setSerializer(Serializer s){
         staticSerializer = s;
     }
-
-    public interface Serializer{
-        String serialize(Object obj);
-        String getContentType();
-    }
-    public class NoSerializerException extends RuntimeException{}
 }

@@ -1,6 +1,7 @@
 package com.jeffrey.server.integration;
 
 import com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.Request;
 import com.jeffrey.server.core.Response;
 import com.jeffrey.server.premade.WebsiteHandler;
 import com.jeffrey.server.util.ByteArray;
@@ -78,27 +79,27 @@ public class WebsiteHandlerTest {
             server.register("/a", new WebsiteHandler("tempdir"));
             server.start();
 
-            Response response = get(url + "/badurl");
+            Response response = new Request().setURI(url + "/badurl").send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), error);
             Assert.assertEquals(response.getStatus(), 404);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url + "/error.html");
+            response = new Request().setURI(url + "/error.html").send();
             Assert.assertEquals(error, new String(response.getBody(), "UTF-8"));
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url);
+            response = new Request().setURI(url).send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url + "/");
+            response = new Request().setURI(url + "/").send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url + "/index.html");
+            response = new Request().setURI(url + "/index.html").send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
@@ -119,27 +120,27 @@ public class WebsiteHandlerTest {
             server.register("/", new WebsiteHandler("tempdir"));
             server.start();
 
-            Response response = get(url + "/badurl");
+            Response response = new Request().setURI(url + "/badurl").send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), error);
             Assert.assertEquals(response.getStatus(), 404);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url + "/error.html");
+            response = new Request().setURI(url + "/error.html").send();
             Assert.assertEquals(error, new String(response.getBody(), "UTF-8"));
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url);
+            response = new Request().setURI(url).send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url + "/");
+            response = new Request().setURI(url + "/").send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
 
-            response = get(url + "/index.html");
+            response = new Request().setURI(url + "/index.html").send();
             Assert.assertEquals(new String(response.getBody(), "UTF-8"), good);
             Assert.assertEquals(response.getStatus(), 200);
             Assert.assertEquals(response.getHeaders().getFirst("Content-Type"), "text/html");
@@ -148,29 +149,5 @@ public class WebsiteHandlerTest {
             e.printStackTrace();
             Assert.fail();
         }
-    }
-
-    public Response get(String url){
-        Response r = null;
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("GET");
-            int status = connection.getResponseCode();
-            byte[] bytes;
-            if(status > 0 && status < 400) {
-                bytes = new ByteArray(connection.getInputStream()).trim();
-            }
-            else
-                bytes = new ByteArray(connection.getErrorStream()).trim();
-            r = new Response(status, bytes);
-            for(Map.Entry<String, List<String>> e: connection.getHeaderFields().entrySet()){
-                r.addHeader(e.getKey(), e.getValue().get(0));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assert.fail();
-        }
-        return r;
     }
 }

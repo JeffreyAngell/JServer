@@ -1,6 +1,7 @@
 package com.jeffrey.server.core;
 
 import com.jeffrey.server.util.ByteArray;
+import com.jeffrey.server.util.Serializer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class ResponseTests {
         Assert.assertEquals(2, first.getCalled());
     }
 
-    class CountSerializer implements Response.Serializer{
+    class CountSerializer implements Serializer {
         private int called = 0;
         @Override
         public String serialize(Object obj) {

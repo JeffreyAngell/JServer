@@ -12,6 +12,18 @@ import java.io.InputStream;
 * Created by jeffrey on 3/7/15.
 */
 public class Response {
+    static Serializer staticSerializer = new Serializer() {
+        @Override
+        public String serialize(Object obj) {
+            return obj.toString();
+        }
+
+        @Override
+        public String getContentType() {
+            return "text/plain";
+        }
+    };
+
     int status;
     byte[] response;
     boolean stream = false;
@@ -19,7 +31,6 @@ public class Response {
     long islength;
     Headers headers = null;
     Serializer serializer;
-    static Serializer staticSerializer = null;
 
     public Response(int i){
         this(i, (byte[]) null);
@@ -41,8 +52,6 @@ public class Response {
     }
 
     public Response send(Object o){
-        if(serializer == null)
-            throw new Serializer.NoSerializerException();
         response = serializer.serialize(o).getBytes();
         addHeader("Content-Type", serializer.getContentType());
         return this;

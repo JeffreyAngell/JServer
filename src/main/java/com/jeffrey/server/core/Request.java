@@ -74,6 +74,8 @@ public class Request {
 
     public Request setURI(String s){
         uri = URI.create(s);
+        if(uri.getHost() != null)
+            path = uri.toString().replaceFirst(uri.getHost(), "");
         return this;
     }
 
@@ -96,6 +98,11 @@ public class Request {
 
     public Request setSerializer(Serializer s){
         serializer = s;
+        return this;
+    }
+
+    public Request setPath(String s){
+        path = s;
         return this;
     }
 

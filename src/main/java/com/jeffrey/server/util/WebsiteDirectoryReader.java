@@ -1,7 +1,5 @@
 package com.jeffrey.server.util;
 
-import com.jeffrey.server.core.Response;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

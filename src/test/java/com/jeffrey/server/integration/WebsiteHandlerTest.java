@@ -30,6 +30,10 @@ public class WebsiteHandlerTest {
     @Before
     public void setup(){
         File f = new File("tempdir");
+        if(f.exists() && f.isDirectory())
+            recursiveDelete(f);
+        else if(f.exists())
+            f.delete();
         boolean success = f.mkdir();
         if(success) {
             try {

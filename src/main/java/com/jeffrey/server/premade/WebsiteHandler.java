@@ -7,7 +7,6 @@ import com.jeffrey.server.util.DirectoryReader;
 import com.jeffrey.server.util.WebsiteDirectoryReader;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class WebsiteHandler implements JHandler {
@@ -19,7 +18,7 @@ public class WebsiteHandler implements JHandler {
     @Override
     public Response handle(Request r) {
         String offset = r.getPath().equals("/") ? r.getURI().getPath() : r.getURI().getPath().replaceFirst(r.getPath(), "");
-        DirectoryReader.FileObject f = null;
+        DirectoryReader.FileObject f;
         try {
             f = reader.get(offset);
             return new Response(200).send(f);

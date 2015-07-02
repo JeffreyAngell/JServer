@@ -1,5 +1,9 @@
-package com.jeffrey.server.core;
+package com.jeffrey.server.integration;
 
+import com.jeffrey.server.core.JHandler;
+import com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.Request;
+import com.jeffrey.server.core.Response;
 import com.jeffrey.server.util.ByteArray;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +18,7 @@ public class BasicResponseTest {
     @Test
     public void codeCompiles(){
         try {
-            JServer s = new JServer(9000);
+            JServer s = new JServer(0);
             s.register("/asdf", new JHandler() {
                 @Override
                 public Response handle(Request r) {
@@ -42,9 +46,11 @@ public class BasicResponseTest {
     @Test
     public void serverBasicsWorkTest(){
         JServer s;
+        int port = 0;
         try {
-            s = new JServer(8080);
+            s = new JServer(0);
             s.start();
+            port = s.getPort();
             s.register("/asdf", new JHandler() {
                 @Override
                 public Response handle(Request r) {
@@ -56,11 +62,12 @@ public class BasicResponseTest {
             });
         } catch (IOException e) {
             e.printStackTrace();
+            Assert.fail();
             return;
         }
 
         try{
-            HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:8080/asdf").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:" + String.valueOf(port) + "/asdf").openConnection();
             connection.setRequestMethod("POST");
             connection.setDoInput(true);
             connection.setDoOutput(true);

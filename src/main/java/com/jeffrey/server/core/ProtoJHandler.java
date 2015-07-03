@@ -5,13 +5,4 @@ package com.jeffrey.server.core;
  */
 public interface ProtoJHandler {
     Response handle(Request r);
-
-    static ProtoJHandler makeHandler(int status) {
-        return new ProtoJHandler() {
-            @Override
-            public Response handle(Request r) {
-                return null;
-            }
-        };
-    }
 }

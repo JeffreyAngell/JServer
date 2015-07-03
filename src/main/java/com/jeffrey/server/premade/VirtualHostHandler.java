@@ -1,6 +1,6 @@
 package com.jeffrey.server.premade;
 
-import com.jeffrey.server.core.JHandler;
+import com.jeffrey.server.core.ProtoJHandler;
 import com.jeffrey.server.core.Request;
 import com.jeffrey.server.core.Response;
 
@@ -13,7 +13,7 @@ import java.util.Scanner;
 /**
  * Created by jeffreya on 7/2/15.
  */
-public class VirtualHostHandler implements JHandler {
+public class VirtualHostHandler implements ProtoJHandler {
     Map<String, WebsiteHandler> arbitrar;
     boolean refreshing = false;
 
@@ -28,22 +28,22 @@ public class VirtualHostHandler implements JHandler {
             return arbitrar.get(host).handle(r);
         }
 
-        //Could this cause an issue? Am I thread-safe? Does it matter?
-        //Consider thread synchronization in the future or locking the object.
-        /*synchronized (this) {
-            Of course, recursion would then not work for a non-existent URL. So think about it.
-        }*/
-        if(!refreshing){
-            refreshing = true;
-            try {
-                refresh();
-                return handle(r);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return new Response(500).send("Could not find hosts.conf file");
+        if(refreshing)
+            return new Response(503);
+
+        refreshing = true;
+        try {
+            refresh();
+            host = r.getURI().getHost();
+            if(arbitrar.containsKey(host)){
+                return arbitrar.get(host).handle(r);
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new Response(500).send("Could not find hosts.conf file");
+        } finally{
+            refreshing = false;
         }
-        refreshing = false;
         return new Response(404);
     }
 
@@ -57,6 +57,7 @@ public class VirtualHostHandler implements JHandler {
                 throw new RuntimeException("Invalid format for hosts.conf");
             temp.put(parts[0], new WebsiteHandler(parts[1]));
         }
+        scanner.close();
         arbitrar = temp;
     }
 }

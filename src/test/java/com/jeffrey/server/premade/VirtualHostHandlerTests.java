@@ -1,6 +1,6 @@
 package com.jeffrey.server.premade;
 
-import com.jeffrey.server.core.JHandler;
+import com.jeffrey.server.core.ProtoJHandler;
 import com.jeffrey.server.core.Request;
 import com.jeffrey.server.core.Response;
 import com.jeffrey.server.util.ByteArray;
@@ -85,7 +85,7 @@ public class VirtualHostHandlerTests {
 
     @Test
     public void simpleVerify(){
-        JHandler h = null;
+        ProtoJHandler h = null;
         try {
             h = new VirtualHostHandler();
         } catch (FileNotFoundException e) {
@@ -116,7 +116,7 @@ public class VirtualHostHandlerTests {
 
     @Test
     public void refreshVerify(){
-        JHandler h = null;
+        ProtoJHandler h = null;
         try {
             h = new VirtualHostHandler();
         } catch (FileNotFoundException e) {

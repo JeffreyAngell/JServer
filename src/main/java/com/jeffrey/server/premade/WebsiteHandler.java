@@ -1,6 +1,6 @@
 package com.jeffrey.server.premade;
 
-import com.jeffrey.server.core.JHandler;
+import com.jeffrey.server.core.ProtoJHandler;
 import com.jeffrey.server.core.Request;
 import com.jeffrey.server.core.Response;
 import com.jeffrey.server.util.DirectoryReader;
@@ -9,7 +9,7 @@ import com.jeffrey.server.util.WebsiteDirectoryReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class WebsiteHandler implements JHandler {
+public class WebsiteHandler implements ProtoJHandler {
     WebsiteDirectoryReader reader;
     public WebsiteHandler(String s) throws FileNotFoundException{
         reader = new WebsiteDirectoryReader(new File(s));

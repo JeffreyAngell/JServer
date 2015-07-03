@@ -1,5 +1,6 @@
 package com.jeffrey.server.core;
 
+import com.jeffrey.server.premade.JHandlerBuilder;
 import com.sun.net.httpserver.*;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -23,7 +24,18 @@ public class RequestTests {
 
     @Test
     public void canSendRequestTest(){
-        Response r = new Request().setURI("http://www.google.com").send();
+        int port = 0;
+        try {
+            ProtoJServer s = new ProtoJServer(0);
+            s.register("/", JHandlerBuilder.status(200).build());
+            s.start();
+            port = s.getPort();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+
+        Response r = new Request().setURI(String.format("http://localhost:%d", port)).send();
         Assert.assertTrue(r.getStatus() < 400); //I don't know what the response will be, but it should not be an error
         String s = new String(r.getBody());
     }

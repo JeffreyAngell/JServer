@@ -1,7 +1,7 @@
 package com.jeffrey.server.integration;
 
-import com.jeffrey.server.core.JHandler;
-import com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.ProtoJHandler;
+import com.jeffrey.server.core.ProtoJServer;
 import com.jeffrey.server.core.Request;
 import com.jeffrey.server.core.Response;
 import com.jeffrey.server.util.ByteArray;
@@ -18,8 +18,8 @@ public class BasicResponseTest {
     @Test
     public void codeCompiles(){
         try {
-            JServer s = new JServer(0);
-            s.register("/asdf", new JHandler() {
+            ProtoJServer s = new ProtoJServer(0);
+            s.register("/asdf", new ProtoJHandler() {
                 @Override
                 public Response handle(Request r) {
                     if(r.getMethod().equals("GET")) {
@@ -45,13 +45,13 @@ public class BasicResponseTest {
 
     @Test
     public void serverBasicsWorkTest(){
-        JServer s;
+        ProtoJServer s;
         int port = 0;
         try {
-            s = new JServer(0);
+            s = new ProtoJServer(0);
             s.start();
             port = s.getPort();
-            s.register("/asdf", new JHandler() {
+            s.register("/asdf", new ProtoJHandler() {
                 @Override
                 public Response handle(Request r) {
                     if(r.getMethod().equals("POST")){

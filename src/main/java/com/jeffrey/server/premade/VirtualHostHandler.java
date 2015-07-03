@@ -23,7 +23,11 @@ public class VirtualHostHandler implements ProtoJHandler {
 
     @Override
     public Response handle(Request r) {
-        String host = r.getURI().getHost();
+        String host;
+        if(r.getHeaders() != null && r.getHeaders().containsKey("Host"))
+            host = r.getHeaders().getFirst("Host").replaceFirst(":\\d+", "");
+        else
+            host = r.getHost();
         if(arbitrar.containsKey(host)){
             return arbitrar.get(host).handle(r);
         }

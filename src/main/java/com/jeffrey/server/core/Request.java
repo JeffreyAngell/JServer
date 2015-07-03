@@ -9,10 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.URL;
+import java.net.*;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +23,7 @@ public class Request {
     private URI uri;
     private InetSocketAddress address;
     private String path;
+    private String host;
     private boolean sendable;
     Serializer serializer;
     static Serializer staticSerializer = null;
@@ -33,6 +31,10 @@ public class Request {
     //This constructor is used internally to parse HttpExchanges
     public Request(HttpExchange e){
         sendable = false;
+        if(e.getLocalAddress() != null)
+            host = e.getLocalAddress().getHostString();
+        else
+            host = null;
         is = e.getRequestBody();
         method = e.getRequestMethod();
         h = e.getRequestHeaders();
@@ -41,6 +43,7 @@ public class Request {
         path = e.getHttpContext().getPath();
     }
 
+    public String getHost(){ return host; }
 
     public InputStream getBody() {
         return is;

@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-/**
- * Created by jeffreya on 6/30/15.
- */
 public abstract class DirectoryReader {
     String base;
 

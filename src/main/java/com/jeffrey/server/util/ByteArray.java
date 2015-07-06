@@ -3,9 +3,6 @@ package com.jeffrey.server.util;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by jeffrey on 3/7/15.
- */
 public class ByteArray {
     private byte[] bytes;
     private int length = 512;

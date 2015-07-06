@@ -11,9 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
-/**
- * Created by jeffreya on 6/30/15.
- */
 public class WebsiteDirectoryReaderTests {
     static String good = "This is a page. qwerqwerqwer";
     static String error = "This is the error page. asdfasdfasdf";

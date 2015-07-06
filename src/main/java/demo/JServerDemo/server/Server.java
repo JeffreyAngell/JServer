@@ -1,6 +1,6 @@
 package demo.JServerDemo.server;
 
-import com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.ProtoJServer;
 import com.sun.net.httpserver.HttpContext;
 import demo.HttpServerDemo.filter.LoggingFilter;
 import demo.HttpServerDemo.filter.MethodFilter;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class Server {
     public static void main(String[] args) {
         try {
-            JServer server = new JServer(8081);
+            ProtoJServer server = new ProtoJServer(8081);
             server.register("/good", new GoodHandler());
             server.register("/bad", new BadHandler());
             server.register("/random", new RandomHandler());

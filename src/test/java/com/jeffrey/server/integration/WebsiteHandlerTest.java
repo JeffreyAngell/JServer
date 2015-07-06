@@ -1,10 +1,9 @@
 package com.jeffrey.server.integration;
 
-import com.jeffrey.server.core.JServer;
+import com.jeffrey.server.core.ProtoJServer;
 import com.jeffrey.server.core.Request;
 import com.jeffrey.server.core.Response;
 import com.jeffrey.server.premade.WebsiteHandler;
-import com.jeffrey.server.util.ByteArray;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,10 +12,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class WebsiteHandlerTest {
@@ -30,6 +25,10 @@ public class WebsiteHandlerTest {
     @Before
     public void setup(){
         File f = new File("tempdir");
+        if(f.exists() && f.isDirectory())
+            recursiveDelete(f);
+        else if(f.exists())
+            f.delete();
         boolean success = f.mkdir();
         if(success) {
             try {
@@ -73,7 +72,7 @@ public class WebsiteHandlerTest {
     @Test
     public void websiteAtLocationChecker(){
         try{
-            JServer server = new JServer(0);
+            ProtoJServer server = new ProtoJServer(0);
             int port = server.getPort();
             String url = "http://localhost:" + String.valueOf(port) + "/a";
             server.register("/a", new WebsiteHandler("tempdir"));
@@ -113,7 +112,7 @@ public class WebsiteHandlerTest {
     @Test
     public void websiteAtRootChecker(){
         try{
-            JServer server = new JServer(0);
+            ProtoJServer server = new ProtoJServer(0);
             int port = server.getPort();
             String url = "http://localhost:" + String.valueOf(port);
 

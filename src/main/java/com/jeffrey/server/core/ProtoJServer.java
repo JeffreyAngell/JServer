@@ -8,21 +8,18 @@ import java.net.InetSocketAddress;
 import java.security.*;
 import java.security.cert.CertificateException;
 
-/**
- * Created by jeffrey on 3/7/15.
- */
-public class JServer{
+public class ProtoJServer {
     HttpServer server;
 
-    public JServer(int port) throws IOException {
+    public ProtoJServer(int port) throws IOException {
         this(port, 0);
     }
 
-    public JServer(int port, int i) throws IOException {
+    public ProtoJServer(int port, int i) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 5);
     }
 
-    public JServer(int port, String s, String kslocation, String kspassword) throws IOException {
+    public ProtoJServer(int port, String s, String kslocation, String kspassword) throws IOException {
         if (s.equals("https") || s.contains("s")) {
             server = HttpsServer.create(new InetSocketAddress(port), 0);
             try {
@@ -81,15 +78,15 @@ public class JServer{
         server.stop(0);
     }
 
-    public HttpContext register(String s, JHandler h){
+    public HttpContext register(String s, ProtoJHandler h){
         return server.createContext(s, new HandlerWrapper(h));
     }
 
 
     public class HandlerWrapper implements HttpHandler {
-        JHandler h;
+        ProtoJHandler h;
 
-        public HandlerWrapper(JHandler h){
+        public HandlerWrapper(ProtoJHandler h){
             this.h = h;
         }
 

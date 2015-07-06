@@ -8,17 +8,12 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-/**
-* Created by jeffrey on 3/7/15.
-*/
 public class Request {
     private InputStream is;
     private String method;
@@ -26,6 +21,7 @@ public class Request {
     private URI uri;
     private InetSocketAddress address;
     private String path;
+    private String host;
     private boolean sendable;
     Serializer serializer;
     static Serializer staticSerializer = null;
@@ -33,6 +29,12 @@ public class Request {
     //This constructor is used internally to parse HttpExchanges
     public Request(HttpExchange e){
         sendable = false;
+        if(e.getRequestHeaders() != null && e.getRequestHeaders().containsKey("Host"))
+            host = e.getRequestHeaders().getFirst("Host");
+        else if(e.getLocalAddress() != null)
+            host = e.getLocalAddress().getHostString();
+        else
+            host = null;
         is = e.getRequestBody();
         method = e.getRequestMethod();
         h = e.getRequestHeaders();
@@ -41,6 +43,13 @@ public class Request {
         path = e.getHttpContext().getPath();
     }
 
+    public String getHost(){
+        if(h != null && h.containsKey("Host"))
+            host = h.getFirst("Host");
+        else if(uri != null && uri.getHost() != null)
+            host = uri.getHost();
+        return host;
+    }
 
     public InputStream getBody() {
         return is;
@@ -74,6 +83,7 @@ public class Request {
 
     public Request setURI(String s){
         uri = URI.create(s);
+        path = uri.getPath();
         return this;
     }
 
@@ -96,6 +106,18 @@ public class Request {
 
     public Request setSerializer(Serializer s){
         serializer = s;
+        return this;
+    }
+
+    public Request setPath(String s){
+        path = s;
+        return this;
+    }
+
+    public Request addHeader(String key, String value){
+        if(h == null)
+            h = new Headers();
+        h.add(key, value);
         return this;
     }
 

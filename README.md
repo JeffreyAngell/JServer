@@ -1,4 +1,4 @@
-![](https://travis-ci.org/JeffreyAngell/ProtoJ.svg?branch=master)
+[![Build Status](https://travis-ci.org/JeffreyAngell/ProtoJ.svg?branch=master)](https://travis-ci.org/JeffreyAngell/ProtoJ)
 # ProtoJ
 A wrapper on Java's com.sun.net.HttpServer and related classes
 

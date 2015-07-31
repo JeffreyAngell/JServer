@@ -1,3 +1,4 @@
+![](https://travis-ci.org/JeffreyAngell/ProtoJ.svg?branch=master)
 # ProtoJ
 A wrapper on Java's com.sun.net.HttpServer and related classes
 

@@ -77,12 +77,7 @@ public class BasicResponseTest {
             connection.getOutputStream().write(string.getBytes());
             connection.getOutputStream().close();
             InputStream is = connection.getInputStream();
-            ByteArray ba = new ByteArray();
-            while(is.available() > 0){
-                byte[] t = new byte[is.available()];
-                is.read(t);
-                ba.add(t);
-            }
+            ByteArray ba = new ByteArray(is);
             Assert.assertEquals(string, new String(ba.trim()));
         } catch (IOException e) {
             e.printStackTrace();

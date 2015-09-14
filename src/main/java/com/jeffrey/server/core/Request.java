@@ -48,6 +48,9 @@ public class Request {
             host = h.getFirst("Host");
         else if(uri != null && uri.getHost() != null)
             host = uri.getHost();
+        if(host != null && host.indexOf(":") > -1){
+            host = host.substring(0, host.indexOf(":") - 1);
+        }
         return host;
     }
 

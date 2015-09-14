@@ -37,7 +37,6 @@ public class VirtualHostHandler implements ProtoJHandler {
         refreshing = true;
         try {
             refresh();
-            host = r.getHost();
             if(arbitrar.containsKey(host)){
                 return arbitrar.get(host).handle(r);
             }

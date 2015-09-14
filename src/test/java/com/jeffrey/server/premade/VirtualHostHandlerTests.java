@@ -104,6 +104,38 @@ public class VirtualHostHandlerTests {
     }
 
     @Test
+    public void portVerify(){
+        //Verify that port is not an issue for the virtual hosts
+        ProtoJHandler h = null;
+        try {
+            h = new VirtualHostHandler();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
+        for(String s: sites){
+            Request req = new Request().setURI("http://" + s + ":8081");
+            Response res = h.handle(req);
+            try {
+                Assert.assertArrayEquals(s.getBytes(), new ByteArray(res.getStream()).trim());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail();
+            }
+        }
+        for(String s: sites){
+            Request req = new Request().setURI("http://" + s + ":3423/index.html");
+            Response res = h.handle(req);
+            try {
+                Assert.assertArrayEquals(s.getBytes(), new ByteArray(res.getStream()).trim());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Assert.fail();
+            }
+        }
+    }
+
+    @Test
     public void uriHostVerify(){
         //These don't fit the right format for a request for a virtual host,
         //But I should make a best effort anyway
